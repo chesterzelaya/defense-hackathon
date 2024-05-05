@@ -2,12 +2,38 @@ import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
+interface SceneItems {
+  [item: string]: string[];  
+}
+
+interface Scenes {
+  [scene: string]: SceneItems;  
+}
+
+const scenes: Scenes = {
+  'shack': {
+    'bottle': ['can-side.png'],
+    'chair': ['chair-side.png', 'chair-top01.png'],
+    'candle': ['candle-side.png', 'candle-top01.png'],
+    'chips': ['chips-side.png', 'chips-top01.png'],
+    'cup': ['cup-side.png', 'cup-top01.png'],
+    'oreo': ['oreo-side.png', 'oreo-top01.png'],
+    'wallet': ['wallet-side.png', 'wallet-top01.png'],
+  },
+  'greece': {
+    'lamp': ['lamp-side.png', 'lamp-top01.png'],
+    'pool': ['pool-side.png', 'pool-top01.png'],
+    'table': ['table-side.png', 'table-top01.png'],
+  },
+}
+
+
 export default function Home() {
   const [query, setQuery] = useState('');
   const [scene, setScene] = useState('shack');
-  const [imageSrc, setImageSrc] = useState(`/scenes/${scene}/base-top.png`);
+  const [imageSrc, setImageSrc] = useState(`/scenes/${scene}/base-side.png`);
   const [imageIndex, setImageIndex] = useState(0);
-  const [imageList, setImageList] = useState([]);
+  const [imageList, setImageList] = useState<string[]>([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -23,25 +49,9 @@ export default function Home() {
   const updateImageSrc = (input: string) => {
     setQuery(input);
     const inputLower = input.trim().toLowerCase();
-    const scenes = {
-      'shack': {
-        'bottle': ['can-side.png'],
-        'chair': ['chair-side.png', 'chair-top01.png'],
-        'candle': ['candle-side.png', 'candle-top01.png'],
-        'chips': ['chips-side.png', 'chips-top01.png'],
-        'cup': ['cup-side.png', 'cup-top01.png'],
-        'oreo': ['oreo-side.png', 'oreo-top01.png'],
-        'wallet': ['wallet-side.png', 'wallet-top01.png'],
-      },
-      'greece': {
-        'lamp': ['lamp-side.png', 'lamp-top01.png'],
-        'pool': ['pool-side.png', 'pool-top01.png'],
-        'table': ['table-side.png', 'table-top01.png'],
-      }
-    };
 
     const allImages = scenes[scene] || {};
-    const matchedImages = Object.entries(allImages).reduce((acc, [key, values]) => {
+    const matchedImages = Object.entries(allImages).reduce<string[]>((acc, [key, values]) => {
       if (inputLower.startsWith(key)) {
         acc.push(...values);
       }
