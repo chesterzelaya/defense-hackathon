@@ -77,7 +77,7 @@ export default function Home() {
   return (
     <main className={`flex gap-3 min-h-screen flex-col items-center justify-between p-12 ${inter.className} w-full max-w-[840px] mx-auto`}>
       <div className="flex flex-row gap-3 items-center justify-between w-full">
-        <h1 className="flex font-medium text-4xl font-mono">3D Scout</h1>
+        <h1 className="flex font-medium text-4xl font-mono">3D Search </h1>
         <div className="flex gap-3 items-center">
           <h1 className="text-gray-600">Scenes</h1>
           <button className="border px-5 py-3 border-black rounded-md font-mono hover:bg-gray-300" onClick={() => changeScene('shack')}>Shack</button>
