@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 interface SceneItems {
-  [item: string]: string[];  
+  [item: string]: string[];
 }
 
 interface Scenes {
-  [scene: string]: SceneItems;  
+  [scene: string]: SceneItems;
 }
 
 const scenes: Scenes = {
@@ -27,13 +27,20 @@ const scenes: Scenes = {
   },
 }
 
+type Scene = 'shack' | 'greece';
 
 export default function Home() {
   const [query, setQuery] = useState('');
-  const [scene, setScene] = useState('shack');
+  const [scene, setScene] = useState<Scene>('shack');  // Use Scene type here
   const [imageSrc, setImageSrc] = useState(`/scenes/${scene}/base-side.png`);
   const [imageIndex, setImageIndex] = useState(0);
   const [imageList, setImageList] = useState<string[]>([]);
+
+  // Mapping of scenes to their relevant keywords
+  const sceneKeywords: Record<Scene, string[]> = {
+    shack: ['chips', 'bottle','chair'],
+    greece: ['pool', 'lamp', 'table']
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -67,7 +74,7 @@ export default function Home() {
     }
   };
 
-  const changeScene = (newScene: string) => {
+  const changeScene = (newScene: Scene) => {  // Ensure newScene is of type Scene
     setScene(newScene);
     setImageSrc(`/scenes/${newScene}/base-side.png`);
     setImageList([]);
@@ -77,7 +84,7 @@ export default function Home() {
   return (
     <main className={`flex gap-3 flex-col items-center justify-between p-12 ${inter.className} w-full max-w-[840px] mx-auto`}>
       <div className="flex flex-row gap-3 items-center justify-between w-full mb-8">
-        <h1 className="flex font-medium text-4xl font-mono">3D Search </h1>
+        <h1 className="flex font-medium text-4xl font-mono">3D Search</h1>
         <div className="flex gap-3 items-center">
           <h1 className="text-gray-600">Scenes</h1>
           <button className="border px-5 py-3 border-black rounded-md font-mono hover:bg-gray-300" onClick={() => changeScene('shack')}>Shack</button>
@@ -91,13 +98,25 @@ export default function Home() {
               <img src={imageSrc} width={"100%"} alt="Searched item" className="max-w-full h-auto" />
             </div>
           )}
-          <div className="flex w-full items-center px-6 py-3">
+          <div className="flex flex-col w-full items-center px-6 py-3">
             <input
               placeholder="/search the scene"
               className="flex-grow resize-none outline-none text-3xl text-center"
               value={query}
               onChange={e => updateImageSrc(e.target.value)}
             />
+            <div className="flex gap-2 mt-4 items-center">
+              <h3 className="text-lg">Try</h3> 
+              {sceneKeywords[scene].map(item => (
+                <button
+                  key={item}
+                  onClick={() => updateImageSrc(item)}
+                  className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
