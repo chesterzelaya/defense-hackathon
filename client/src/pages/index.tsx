@@ -1,5 +1,4 @@
 import { Inter } from "next/font/google";
-import { SearchBar } from "@/components/Search";
 import { useEffect, useState } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +15,7 @@ export default function Home() {
         setImageIndex((prevIndex) => (prevIndex + 1) % imageList.length);
         setImageSrc(`/scenes/${scene}/${imageList[imageIndex]}`);
       }
-    }, 1000);
+    }, 1500);
 
     return () => clearInterval(interval);
   }, [imageList, imageIndex, scene]);
@@ -35,8 +34,9 @@ export default function Home() {
         'wallet': ['wallet-side.png', 'wallet-top01.png'],
       },
       'greece': {
-        'candle': ['candle-side.png', 'candle-top01.png'],
-        'chips': ['chips-side.png', 'chips-top01.png'],
+        'lamp': ['lamp-side.png', 'lamp-top01.png'],
+        'pool': ['pool-side.png', 'pool-top01.png'],
+        'table': ['table-side.png', 'table-top01.png'],
       }
     };
 
@@ -67,10 +67,11 @@ export default function Home() {
   return (
     <main className={`flex gap-3 min-h-screen flex-col items-center justify-between p-12 ${inter.className} w-full max-w-[840px] mx-auto`}>
       <div className="flex flex-row gap-3 items-center justify-between w-full">
-        <h1 className="flex font-medium text-4xl font-mono">3D Search Engine</h1>
-        <div className="flex gap-3">
-          <button className="border px-5 py-3 border-black rounded-md font-mono" onClick={() => changeScene('shack')}>Scene 1</button>
-          <button className="border px-5 py-3 border-black rounded-md font-mono" onClick={() => changeScene('house')}>Scene 2</button>
+        <h1 className="flex font-medium text-4xl font-mono">3D Scout</h1>
+        <div className="flex gap-3 items-center">
+          <h1 className="text-gray-600">Scenes</h1>
+          <button className="border px-5 py-3 border-black rounded-md font-mono hover:bg-gray-300" onClick={() => changeScene('shack')}>Shack</button>
+          <button className="border px-5 py-3 border-black rounded-md font-mono hover:bg-gray-300" onClick={() => changeScene('greece')}>Greece</button>
         </div>
       </div>
       <div className="flex gap-5">
@@ -80,10 +81,10 @@ export default function Home() {
               <img src={imageSrc} width={"100%"} alt="Searched item" className="max-w-full h-auto" />
             </div>
           )}
-          <div className="flex w-full items-center border px-6 py-3">
+          <div className="flex w-full items-center px-6 py-3">
             <input
-              placeholder={'/search the scene'}
-              className={`flex-grow resize-none outline-none text-3xl text-center`}
+              placeholder="/search the scene"
+              className="flex-grow resize-none outline-none text-3xl text-center"
               value={query}
               onChange={e => updateImageSrc(e.target.value)}
             />
